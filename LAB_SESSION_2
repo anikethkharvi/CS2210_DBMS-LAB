@@ -1,0 +1,71 @@
+-- Create database and use it
+create database UniDB2;
+use UniDB2;
+
+-- Department table
+create table Department(
+  DeptID INT primary key,
+  DeptName varchar(15)
+);
+
+-- Student table
+create table Student(
+  USN varchar(20) primary key,
+  SName varchar(50) not null,
+  DeptID INT,
+  DOB date,
+  foreign key (DeptID) references Department(DeptID)
+);
+
+-- Course table (must be created before coursereg/marks)
+create table Course(
+  CourseID varchar(10) primary key,
+  CourseName varchar(50) not null,
+  Credits int,
+  DeptID int,
+  foreign key(DeptID) references Department(DeptID)
+);
+
+-- Course Registration table
+create table CourseReg(
+  USN varchar(20),
+  CourseID varchar(10),
+  Semester INT,
+  primary key(USN, CourseID),
+  foreign key (USN) references Student(USN),
+  foreign key (CourseID) references Course(CourseID)
+);
+
+-- Marks table
+create table Marks(
+  USN varchar(20),
+  CourseID varchar(10),
+  Score int,
+  foreign key (USN) references Student(USN),
+  foreign key (CourseID) references Course(CourseID)
+);
+
+-- Insert departments
+insert into Department values
+(1,'Physics'),
+(2,'CS');
+
+-- Insert students
+insert into Student values
+('546467','Ravi Kumar',1,'2002-05-12'),
+('4E6547','Anitha Kumar',2,'2001-11-23');
+
+-- Insert courses
+insert into Course values
+('CS201','Quantum Mechanics',4,1),
+('CS202','Database Systems',3,2);
+
+-- Insert course registrations
+insert into CourseReg values
+('546467','CS201',3),
+('4E6547','CS202',4);
+
+-- Insert marks
+insert into Marks values
+('546467','CS201',85),
+('4E6547','CS202',90);
